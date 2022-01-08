@@ -1,21 +1,29 @@
 package com.san.ambitious.spring.springbootdemo;
 
-import com.san.ambitious.spring.springbootdemo.entity.Animal;
-import com.san.ambitious.spring.springbootdemo.service.AnimalService;
+import com.san.ambitious.spring.springbootdemo.entity.User;
+import com.san.ambitious.spring.springbootdemo.repo.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootApplication
 @RestController
 @Slf4j
-public class SpringBootDemoApplication {
+public class SpringBootDemoApplication implements CommandLineRunner {
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public static void main(String[] args) {
 
@@ -23,12 +31,6 @@ public class SpringBootDemoApplication {
         /*Animal animal = context.getBean(Animal.class);
         log.info(animal.getId());
         log.info(animal.getSound());*/
-        AnimalService as = context.getBean(AnimalService.class);
-        as.getAnimal();
-
-        List<String> list=new ArrayList<>();
-        list.add("Sanjeev");
-
     }
 
     @GetMapping
@@ -36,4 +38,12 @@ public class SpringBootDemoApplication {
         return List.of("Sanjeev", "Sachin", "Pratiksha");
     }
 
+    @Override
+    public void run(String... args) throws Exception {
+
+        User admin = new User("sanjeev", this.bCryptPasswordEncoder.encode("123"), "sanjeevkumarpal@gmail.com", "Admin");
+        User normal = new User("sachin", this.bCryptPasswordEncoder.encode("1234"), "kyonsp@gmail.com", "Normal");
+        this.userRepository.save(admin);
+        this.userRepository.save(normal);
+    }
 }

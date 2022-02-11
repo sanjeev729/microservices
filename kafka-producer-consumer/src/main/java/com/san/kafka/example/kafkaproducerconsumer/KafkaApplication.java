@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @SpringBootApplication
-public class KafkaProducerConsumerApplication {
+public class KafkaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KafkaProducerConsumerApplication.class, args);
+        SpringApplication.run(KafkaApplication.class, args);
     }
 
     @Bean

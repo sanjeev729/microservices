@@ -1,5 +1,5 @@
 # Microservices
 
-User service Dept service service registry
+User service Dept service service registry.
 
-Added Kafka producer and consumer chamges
+Added Kafka producer and consumer changes.

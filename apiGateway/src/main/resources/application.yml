@@ -13,7 +13,7 @@ spring:
          -  id: DEPARTMENT-SERVICE
             uri: lb://DEPARTMENT-SERVICE
             predicates:
-            - Path=/departments/**
+            - Path=/ds/api/v1/departments/**
 eureka:
    client:
       register-with-eureka: true

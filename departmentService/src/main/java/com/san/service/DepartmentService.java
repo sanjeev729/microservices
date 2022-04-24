@@ -1,5 +1,6 @@
 package com.san.service;
 
+import com.san.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +24,35 @@ public class DepartmentService {
     }
 
     public Department findDepartmentById(Long departmentId) {
-        log.info("Inside saveDepartment of DepartmentService");
-        return departmentRepository.findByDepartmentId(departmentId);
+        log.info("Get department by Id");
+        return departmentRepository.findById(departmentId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("Department Id does not exist");
+        });
+
     }
 
     public List<Department> getAllDepartments() {
         log.info("Inside saveDepartment of DepartmentService");
         return departmentRepository.findAll();
+    }
+
+    public Department deleteDepartment(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("Department Id does not exist");
+        });
+        log.info("Delete department by Id");
+        departmentRepository.deleteById(departmentId);
+        return department;
+
+    }
+
+    public Department updateDepartment(Long departmentId, Department department) {
+        Department oldDepartment = departmentRepository.findById(departmentId).orElseThrow(() -> {
+            throw new ResourceNotFoundException("Department Id does not exist");
+        });
+        oldDepartment.setDepartmentAddress(department.getDepartmentAddress());
+        oldDepartment.setDepartmentCode(department.getDepartmentCode());
+        oldDepartment.setDepartmentName(department.getDepartmentName());
+        return departmentRepository.save(oldDepartment);
     }
 }
